@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  ssti_lab_python:
+    build: .
+    ports:
+      - "8001:8001"
+      - "5678:5678"

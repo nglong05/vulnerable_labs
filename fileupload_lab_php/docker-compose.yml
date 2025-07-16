@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  file-upload-php-1:
+    build: ./src/filter
+    ports:
+      - "9001:80"
+    entrypoint:
+      - sh
+      - -c
+      - |
+        chown -R www-data:www-data /var/www/html/uploads
+        exec apache2-foreground
+
+    volumes:
+      - ./src/filter:/var/www/html
+      - ./src/filter/uploads:/var/www/html/uploads
+    
+
+  file-upload-php-3:
+    build: ./src/toctou
+    ports:
+      - "9003:80"
+    entrypoint:
+      - sh
+      - -c
+      - |
+        chown -R www-data:www-data /var/www/html/uploads
+        exec apache2-foreground
+
+    volumes:
+      - ./src/toctou:/var/www/html
+      - ./src/toctou/uploads:/var/www/html/uploads
+
+

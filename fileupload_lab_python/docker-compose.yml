@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  uploader:
+    build: .
+    ports:
+      - "8001:8008"
+    volumes:
+      - ./uploads:/app/uploads
+    restart: unless-stopped

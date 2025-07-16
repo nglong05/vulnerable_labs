@@ -1,0 +1,8 @@
+{
+  "require": {
+    "twig/twig": "^3.3",
+    "smarty/smarty": "^4.3"
+  },
+  "minimum-stability": "stable"
+}
+

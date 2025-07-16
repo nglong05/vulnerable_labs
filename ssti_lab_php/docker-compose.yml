@@ -1,0 +1,6 @@
+version: "3"
+services: 
+  ssti_lab_php:
+    build: .
+    ports: 
+      - "8002:80"

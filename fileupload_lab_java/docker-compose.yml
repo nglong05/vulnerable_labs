@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  fileupload_lab_java:
+    build: .
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./uploads:/usr/local/tomcat/uploads
