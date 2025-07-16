@@ -1,5 +1,4 @@
 target/
-
+!target/*.war
 *.jsp
-
 apache-tomcat-*/
