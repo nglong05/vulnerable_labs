@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <title>Mã đơn</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container py-4">
+  <h2>Đã tạo đơn!</h2>
+  <h5 class="mt-4">
+    Mã đơn của bạn đây, nếu lần sau muốn order tương tự thì chỉ cần gửi mã này là được!
+  </h5>
+  <form action="{{ url_for('bot') }}" method="POST">
+    <textarea name="code" class="form-control mb-4" rows="3">{{ code }}</textarea>
+    <button class="btn btn-primary">Giao hàng</button>
+  </form>
+</body>
+</html>
+

@@ -1,0 +1,7 @@
+services:
+  deser_php_lab:
+    image: php:8.3-apache
+    ports:
+      - "8000:80"
+    volumes:
+      - "./:/var/www/html/"
