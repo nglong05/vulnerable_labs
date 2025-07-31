@@ -1,0 +1,25 @@
+services:
+  sqli-2:
+    build: .
+    ports:
+      - "5000:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: task2
+      MYSQL_USER: task2_user
+      MYSQL_PASSWORD: task2_password
+      MYSQL_ROOT_PASSWORD: rootpass
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:
+

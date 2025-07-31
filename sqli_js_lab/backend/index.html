@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drink Table Control Panel</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 30px; }
+    table { border-collapse: collapse; margin-top: 20px; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    pre { background: #f4f4f4; padding: 10px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+
+  <h3>Get One Drink</h3>
+  <input id="safeInput" type="text" placeholder="'); DROP TABLE drink; --">
+  <button onclick="getOne()">Call Safe Procedure But not use Prepare statement</button>
+
+  <h3>Get One Drink</h3>
+  <input id="vulInput" type="text" placeholder="'; DROP TABLE drink;--">
+  <button onclick="getOneVul()">Call Vulnerable Procedure</button>
+
+  <h3>Drink Table</h3>
+  <div id="drinkTableContainer"></div>
+
+  <h3>Response</h3>
+  <pre id="output"></pre>
+
+  <script>
+    function renderTable(data) {
+      const table = document.createElement('table');
+      const thead = document.createElement('thead');
+      const tbody = document.createElement('tbody');
+
+      // Create headers
+      const headers = Object.keys(data[0]);
+      const headerRow = document.createElement('tr');
+      headers.forEach(header => {
+        const th = document.createElement('th');
+        th.innerText = header;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+
+      // Create rows
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        headers.forEach(header => {
+          const td = document.createElement('td');
+          td.innerText = row[header];
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      document.getElementById('drinkTableContainer').innerHTML = '';
+      document.getElementById('drinkTableContainer').appendChild(table);
+    }
+
+    function getDrinkTable() {
+      fetch('/get-all')
+        .then(res => res.json())
+        .then(data => {
+          renderTable(data);
+        });
+    }
+
+    function getOne() {
+      const input = document.getElementById('safeInput').value;
+      fetch('/unsafe-call', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input })
+      })
+      .then(res => res.text())
+      .then(msg => {
+        document.getElementById('output').innerText = msg;
+        getDrinkTable();
+      });
+    }
+
+    function getOneVul() {
+      const input = document.getElementById('vulInput').value;
+      fetch('/dynamic-procedure', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ input })
+      })
+      .then(res => res.text())
+      .then(msg => {
+        document.getElementById('output').innerText = msg;
+        getDrinkTable();
+      });
+    }
+
+    window.onload = getDrinkTable;
+  </script>
+</body>
+</html>

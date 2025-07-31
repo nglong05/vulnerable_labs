@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:14
+    container_name: task2_db
+    restart: always
+    environment:
+      POSTGRES_DB: task2
+      POSTGRES_USER: task2_user
+      POSTGRES_PASSWORD: task2_password
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+
+  app:
+    build: ./backend
+    container_name: task2_app
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      DB_USER: task2_user
+      DB_PASSWORD: task2_password
+      DB_NAME: task2
+      DB_PORT: 5432
+    volumes:
+      - ./backend:/usr/src/app
+      - node_modules:/usr/src/app/node_modules
+    working_dir: /usr/src/app
+    command: sh -c "npm install && npx nodemon app.js"  # hot-reload
+
+volumes:
+  node_modules:     
+
